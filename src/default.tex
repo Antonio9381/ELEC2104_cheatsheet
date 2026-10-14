@@ -1,0 +1,221 @@
+% ============================================================
+% Cheatsheet template: preamble, styles and macros.
+% Content goes in sections/*.tex; settings live in main.tex.
+% ============================================================
+
+% ---------- Page ----------
+% Print-safe margins: most printers can't print within ~5 mm of the edge.
+\usepackage[top=1.15cm, bottom=0.7cm, left=0.7cm, right=0.7cm, headheight=10pt, headsep=4pt]{geometry}
+\usepackage[english]{babel}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage{setspace}
+\usepackage{needspace}          % keep headings with their content
+
+% ---------- Maths ----------
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{physics}            % \dv, \pdv, \abs, \qty, ...
+\usepackage[makeroom]{cancel}
+\usepackage{siunitx}            % \SI{10}{\kilo\ohm}, \si{\volt}
+
+% ---------- Fonts: Fira Sans + Fira Math (needs LuaLaTeX) ----------
+\usepackage{iftex}
+\RequireLuaTeX                  % clear error if built with pdflatex
+\usepackage{unicode-math}
+\setmainfont{FiraSans}[Extension=.otf, UprightFont=*-Regular, BoldFont=*-Bold,
+    ItalicFont=*-Italic, BoldItalicFont=*-BoldItalic]
+\setsansfont{FiraSans}[Extension=.otf, UprightFont=*-Regular, BoldFont=*-Bold,
+    ItalicFont=*-Italic, BoldItalicFont=*-BoldItalic]
+\setmathfont{FiraMath-Regular.otf}
+% Smaller subscripts at \tiny (5pt): by default they'd be as big as the base letter.
+\DeclareMathSizes{5}{5}{3.8}{3}
+
+% ---------- Tables / lists / graphics ----------
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage[dvipsnames, table]{xcolor}
+\usepackage{tikz}
+\usepackage[siunitx, american]{circuitikz}   % small circuit diagrams
+\ctikzset{bipoles/length=0.6cm}             % compact components, text stays readable
+\usepackage[skins]{tcolorbox}
+
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}   % ragged X column
+
+% ---------- Links: clickable contents + PDF bookmarks ----------
+\usepackage[hidelinks, bookmarksnumbered]{hyperref}
+
+% ---------- Header / footer ----------
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small\bfseries\color{secDark}\subject\ \normalfont\color{black}-- \semester}
+\rhead{\small \sheetauthor\ \textperiodcentered\ p.\thepage}
+\renewcommand{\headrule}{\color{secDark}\hrule height 0.6pt}
+
+% ---------- Dense layout ----------
+\renewcommand{\arraystretch}{1.05}
+\setlength{\extrarowheight}{1pt}   % stop subscripts touching \hline
+\setlist{nosep, leftmargin=*}
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{0pt}
+\setlength{\columnsep}{2mm}
+\setlength{\columnseprule}{0.3pt}
+\def\columnseprulecolor{\color{gray!50}}
+\setlength{\fboxrule}{0.5pt}
+
+% ---------- Colours (print-friendly: pale fills + dark accent bars) ----------
+\definecolor{secDark}{RGB}{160,20,95}       % magenta
+\definecolor{secLight}{RGB}{252,226,239}
+\definecolor{subDark}{RGB}{190,120,0}       % amber
+\definecolor{subLight}{RGB}{255,242,196}
+\definecolor{subsubDark}{RGB}{0,105,145}    % teal
+\definecolor{subsubLight}{RGB}{218,240,248}
+\definecolor{eqDark}{RGB}{40,70,130}        % key-equation box
+\definecolor{eqLight}{RGB}{238,243,252}
+
+% Heading boxes: pale fill with a dark bar on the left
+\tcbset{
+    sheethead/.style={enhanced, nobeforeafter, arc=0pt, boxrule=0pt, frame hidden,
+        left=1mm, right=1mm, top=0.35mm, bottom=0.35mm, boxsep=0pt},
+}
+
+% ---------- Headings (numbered, listed in contents and PDF bookmarks) ----------
+% Optional [number] uses the textbook's numbering; omit it to auto-number.
+%   \section[10]{Analog Systems}     -> 10 Analog Systems
+%   \subsection[10.4]{Bode Plots}    -> 10.4 Bode Plots
+%   \subsubsection{Label}            -> small label, not in contents
+\makeatletter
+\newdimen\sheet@headw
+\newif\ifsheet@afterhead
+\newcommand{\sheet@ifblank}[3]{\if\relax\detokenize{#1}\relax #2\else #3\fi}
+\renewcommand{\section}[2][]{%
+    \par\needspace{6\baselineskip}\vspace{2pt}%
+    \sheet@ifblank{#1}{}{\setcounter{section}{\numexpr#1-1\relax}}%
+    \global\sheet@afterheadfalse
+    \refstepcounter{section}%
+    \addcontentsline{toc}{section}{\protect\numberline{\thesection}#2}%
+    \noindent\begin{tcolorbox}[sheethead, colback=secLight,
+        borderline west={2.5pt}{0pt}{secDark}, top=0.6mm, bottom=0.6mm]
+        \scriptsize\bfseries\color{secDark}\thesection\enspace #2
+    \end{tcolorbox}\par
+    \vspace{1pt}%
+}
+\renewcommand{\subsection}[2][]{%
+    \par\needspace{5\baselineskip}\vspace{2pt}%
+    \refstepcounter{subsection}%
+    \sheet@ifblank{#1}{\edef\@subnum{\thesubsection}}{\def\@subnum{#1}}%
+    \addcontentsline{toc}{subsection}{\protect\numberline{\@subnum}#2}%
+    \sbox0{\tcbox[sheethead, colback=subLight, borderline west={2pt}{0pt}{subDark}]{%
+        \scriptsize\bfseries\@subnum\enspace #2}}%
+    \ifdim\wd0>\linewidth   % too long: wrap onto two lines
+        \sbox0{\tcbox[sheethead, colback=subLight, borderline west={2pt}{0pt}{subDark}]{%
+            \parbox{\dimexpr\linewidth-2mm-1pt}{\raggedright\scriptsize\bfseries\@subnum\enspace #2}}}%
+    \fi
+    \global\sheet@headw=\wd0 \global\sheet@afterheadtrue
+    \noindent\usebox0\par
+}
+\renewcommand{\subsubsection}[1]{%
+    \par\needspace{4\baselineskip}\vspace{1pt}%
+    \global\sheet@afterheadfalse
+    \noindent\tcbox[sheethead, colback=subsubLight, borderline west={1.5pt}{0pt}{subsubDark},
+        top=0.2mm, bottom=0.2mm]{\tiny\bfseries\color{subsubDark!70!black}#1}\par
+}
+
+% Compact table of contents: \contents
+\newcommand{\contents}{%
+    \noindent\begin{tcolorbox}[sheethead, colback=gray!15,
+        borderline west={2.5pt}{0pt}{gray!70!black}, top=0.6mm, bottom=0.6mm]
+        \scriptsize\bfseries Contents
+    \end{tcolorbox}\par
+    \begingroup
+        \renewcommand{\l@section}[2]{\par\noindent\textbf{##1}\dotfill\textbf{##2}}%
+        \renewcommand{\l@subsection}[2]{\par\noindent\hspace*{1em}##1\dotfill##2}%
+        \renewcommand{\numberline}[1]{\makebox[2em][l]{##1}}%
+        \@starttoc{toc}%
+    \endgroup
+    \par\vspace{2pt}%
+}
+\makeatother
+
+% ---------- Content macros ----------
+% Boxed equation:      \mathbox{$E = mc^2$}
+\newtcbox{\mathbox}[1][]{
+    nobeforeafter, center,
+    colframe=eqDark, colback=eqLight,
+    boxrule=0.4pt, arc=0.4mm,
+    left=0.5mm, right=0.5mm, top=0.3mm, bottom=0.3mm,
+    #1
+}
+
+% Handy-formulas box at the end of each subsection:
+%   \begin{handy} ... \end{handy}
+\newtcolorbox{handy}[1][Handy formulas]{
+    enhanced, title={#1},
+    colback=gray!6, colframe=gray!55, colbacktitle=gray!25, coltitle=black,
+    fonttitle=\tiny\bfseries, boxrule=0.3pt, arc=0pt,
+    left=0.6mm, right=0.6mm, top=0.3mm, bottom=0.3mm, toptitle=0.1mm, bottomtitle=0.1mm,
+    before skip=2pt, after skip=2pt,
+    before upper={\raggedright\setlength{\parindent}{0pt}}
+}
+
+% Textbook reference:  \tb{p.152} or \tb{4.3}  -> grey [J p.152], right-aligned.
+% Straight after \subsection it sits on the heading's line if there is room,
+% otherwise on its own line. Mid-paragraph it goes at the end of the line.
+\makeatletter
+\newcommand{\tb}[1]{%
+    \sbox2{\color{gray}[J~#1]}%
+    \ifvmode
+        \ifsheet@afterhead
+            \ifdim\dimexpr\sheet@headw+\wd2+0.5em\relax<\linewidth
+                \vspace{-\baselineskip}%
+            \fi
+        \fi
+        \noindent\hfill\usebox2\par
+    \else
+        \hfill\usebox2%
+    \fi
+    \global\sheet@afterheadfalse}
+\makeatother
+
+% Tiny ideal frequency-response sketch:  \filtresp{Title}{curve path}{extra tikz}
+%   e.g. \filtresp{LP}{(0,1) -- (0.5,1) -- (0.5,0)}{}   (x from 0 to 1, y from 0 to 1)
+\newcommand{\filtresp}[3]{%
+    \begin{tikzpicture}[x=0.8cm, y=0.3cm, baseline=0]
+        \node[above] at (0.55,1.1) {\tiny\bfseries #1};
+        \draw[->] (0,0) -- (1.15,0) node[right, inner sep=0.5pt] {\tiny$f$};
+        \draw[->] (0,0) -- (0,1.3);
+        \draw[thick, subsubDark] #2;
+        #3
+    \end{tikzpicture}}
+
+% Phasor (bold, as in the textbook):  \ph{V_1} -> bold V_1
+\newcommand{\ph}[1]{\mathbf{#1}}
+
+% Circled number:      \circled{1}
+\newcommand*{\circled}[1]{\tikz[baseline=(char.base)]{
+    \node[shape=circle, draw, inner sep=1.2pt] (char) {#1};}}
+
+% End the current column early
+\newcommand{\fillblank}{\vfill\null\columnbreak}
+
+% ---------- Document wrapper ----------
+\newcommand{\cheatsheet}[1]{
+    \begin{document}
+    \tiny
+    \raggedright                   % no stretched gaps in narrow columns
+    \setstretch{0.85}
+    \setlength{\abovedisplayskip}{1pt}
+    \setlength{\belowdisplayskip}{1pt}
+    \setlength{\abovedisplayshortskip}{0pt}
+    \setlength{\belowdisplayshortskip}{0pt}
+    \setlength{\jot}{1pt}
+
+    \begin{multicols*}{\cols}
+        #1
+    \end{multicols*}
+    \end{document}
+}

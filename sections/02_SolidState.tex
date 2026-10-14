@@ -1,0 +1,338 @@
+\section[2]{Solid-State Electronics}
+
+    \subsection[2.1]{Solid-State Electronic Materials}\tb{p.43}
+    Classified by \textbf{resistivity} $\rho$ ($\Omega\cdot$cm). \quad Conductivity $\sigma = 1/\rho$.\\
+    \begin{tabularx}{\linewidth}{|l|l|L|}
+        \hline
+        \textbf{Material} & \textbf{$\rho$ ($\Omega\cdot$cm)} & \textbf{e.g.} \\ \hline
+        Insulator & $> 10^{5}$ & diamond $10^{16}$ \\ \hline
+        Semiconductor & $10^{-3}$ -- $10^{5}$ & Si; $\rho$ is \textbf{set by doping} \\ \hline
+        Conductor & $< 10^{-3}$ & copper $3\times10^{-6}$ \\ \hline
+    \end{tabularx}
+    \begin{itemize}
+        \item \textbf{Elemental}: one element from column IV (Si, Ge, C). \textbf{Compound}: III--V (GaAs, InP, GaN) or II--VI (CdSe).
+        \item \textbf{Si dominates}: larger bandgap than Ge (works hotter) and a stable insulating oxide (SiO$_2$) for ICs.
+        \item GaAs, InP: optoelectronics (LEDs, lasers, photodetectors). SiGe: high-frequency BJTs.
+    \end{itemize}
+
+    {\setlength{\tabcolsep}{2.5pt}%
+    \begin{minipage}[t]{0.48\linewidth}\raggedright
+        \textbf{Bandgap $E_G$ (eV)} {\color{gray}[J T2.3]}\\[1pt]
+        \begin{tabular}{|l|l||l|l|}
+            \hline
+            Si & \textbf{1.12} & GaAs & 1.42 \\ \hline
+            Ge & 0.66 & InP & 1.35 \\ \hline
+            SiC & 3.26 & GaN & 3.49 \\ \hline
+            C & 5.47 & & \\ \hline
+        \end{tabular}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.48\linewidth}\raggedright
+        \textbf{Periodic table} {\color{gray}[J T2.2]}\\[1pt]
+        \begin{tabular}{|c|c|c|}
+            \hline
+            \textbf{III} & \textbf{IV} & \textbf{V} \\ \hline
+            B & C & N \\
+            Al & \cellcolor{subsubLight}Si & P \\
+            Ga & \cellcolor{subsubLight}Ge & As \\
+            In & Sn & Sb \\ \hline
+        \end{tabular}\\
+        \textit{Preview (2.6):} III = \textbf{acceptors} (p-type), V = \textbf{donors} (n-type).
+    \end{minipage}\par}
+
+    \begin{handy}
+        \begin{itemize}
+            \item $R = \rho\dfrac{L}{A}$ \ ($\rho$ in $\Omega\cdot$cm $\Rightarrow$ $L$ in cm, $A$ in cm$^2$). \ $\sigma = 1/\rho$ ($\Omega^{-1}$cm$^{-1}$).
+            \item 1 cm $= 10^4$ \si{\micro\metre} $= 10^7$ nm. \ 1 \si{\micro\metre} $= 10^{-4}$ cm.
+            \item 1 eV $= 1.602\times10^{-19}$ J. \ Larger $E_G$ $\Rightarrow$ fewer carriers $\Rightarrow$ better insulator / higher max temperature.
+        \end{itemize}
+    \end{handy}
+
+    \subsection[2.2]{Covalent Bond Model}\tb{p.44}
+    \begin{itemize}
+        \item Forms: \textbf{amorphous} (disordered), \textbf{polycrystalline} (many small crystals), \textbf{single-crystal} (used for devices).
+        \item Si: 4 valence electrons, covalent bonds to 4 neighbours (diamond lattice, $a = 0.543$ nm).
+        \item \textbf{0 K}: every bond is filled, no free electrons, so Si is an \textbf{insulator}.
+        \item \textbf{$T\uparrow$}: thermal energy breaks bonds, each one creating an \textbf{electron--hole pair}.
+        \item \textbf{Hole}: the vacancy left behind, charge $+q$. It moves as neighbouring electrons hop into it.
+        \item \textbf{Bandgap $E_G$}: the minimum energy needed to break a bond (free an electron).
+    \end{itemize}
+    \textbf{Intrinsic carrier density} \tb{eq.\ 2.1, p.45}
+    \mathbox{$n_i^2 = BT^3\exp\!\left(-\dfrac{E_G}{kT}\right)$ \ cm$^{-6}$}\\
+    $T$ in K, \ $k = 8.62\times10^{-5}$ eV/K, \ $E_G$ in eV.\\
+    {\setlength{\tabcolsep}{2.5pt}%
+    \begin{tabular}{|l|l|l|l|}
+        \hline
+        & $B$ (K$^{-3}$cm$^{-6}$) & $E_G$ (eV) & $n_i$ at 300 K (cm$^{-3}$) \\ \hline
+        Si & $1.08\times10^{31}$ & 1.12 & $6.73\times10^{9} \approx \mathbf{10^{10}}$ \\ \hline
+        Ge & $2.31\times10^{30}$ & 0.66 & $2.27\times10^{13}$ \\ \hline
+        GaAs & $1.27\times10^{29}$ & 1.42 & -- \\ \hline
+    \end{tabular}\par}\vspace{1pt}
+    \textbf{Ex 2.1} (Si, 300 K): $n_i^2 = 1.08\times10^{31}(300)^3 e^{-1.12/(8.62\times10^{-5}\cdot300)} = 4.52\times10^{19} \Rightarrow n_i = 6.73\times10^9$/cm$^3$. \tb{p.46}
+
+    \textbf{Intrinsic} (pure) material: $n = p = n_i$. \quad In \textbf{thermal equilibrium}: \tb{eq.\ 2.2, p.47}
+    \mathbox{$pn = n_i^2$}
+    \begin{itemize}
+        \item Holds only with \textbf{no external stimulus} (no applied V or I, no light). It also holds for doped material (used later).
+        \item $n_i$ is \textbf{very} sensitive to $T$: for Si it roughly doubles every $\sim$9 K near 300 K.
+        \item Si has $5\times10^{22}$ atoms/cm$^3$, so only about 1 bond in $10^{13}$ is broken at room temperature.
+        \item Use $n_i = 10^{10}$/cm$^3$ for Si at room temperature unless told otherwise.
+    \end{itemize}
+
+    \begin{handy}
+        \begin{itemize}
+            \item $T(\mathrm{K}) = T(^\circ\mathrm{C}) + 273$. \ $kT$ at 300 K $= 0.0259$ eV. \ $V_T = kT/q \approx \SI{25.8}{\milli\volt}$ (300 K, book value).
+            \item $q = 1.602\times10^{-19}$ C. \ $k = 8.62\times10^{-5}$ eV/K $= 1.38\times10^{-23}$ J/K.
+            \item Calculator: find $n_i^2$ first, then take $\sqrt{\ }$. Keep $E_G$ and $kT$ both in eV.
+            \item Ratio between two temperatures: $\dfrac{n_i^2(T_2)}{n_i^2(T_1)} = \left(\dfrac{T_2}{T_1}\right)^3 \exp\!\left[\dfrac{E_G}{k}\left(\dfrac1{T_1} - \dfrac1{T_2}\right)\right]$.
+        \end{itemize}
+    \end{handy}
+
+    \subsection[2.3]{Drift Currents and Mobility}\tb{p.47}
+    \subsubsection{2.3.1 Drift current}
+    \textbf{Drift} is carrier motion caused by an electric field $\ph{E}$. \ Drift current density:
+    \mathbox{$\ph{j} = Q\ph{v}$ \quad (C/cm$^3$)(cm/s) = A/cm$^2$}\\
+    $\ph{j}$ = current density (A/cm$^2$, per \textbf{area}), \ $Q$ = charge density (C/cm$^3$, per \textbf{volume}), \ $\ph{v}$ = carrier velocity. \ Current: $I = jA$.
+
+    \subsubsection{2.3.2 Mobility}
+    At low fields, velocity is proportional to field. The constant is the \textbf{mobility} $\mu$ (cm$^2$/V$\cdot$s): \tb{eq.\ 2.4}
+    \mathbox{$\ph{v_n} = -\mu_n\ph{E}$ \qquad $\ph{v_p} = +\mu_p\ph{E}$}
+    \begin{itemize}
+        \item Electrons move \textbf{against} $\ph{E}$ (hence the minus sign); holes move \textbf{with} $\ph{E}$.
+        \item Intrinsic Si: $\mu_n = \mathbf{1420}$, \ $\mu_p = \mathbf{470}$ cm$^2$/V$\cdot$s. \ $\mu_n \approx 3\mu_p$: holes are stuck moving through the bond structure, while electrons move freely.
+        \item \textit{Extra:} this is why n-type devices (NMOS, npn) are faster than p-type devices of the same size.
+    \end{itemize}
+    Ex: hole at $E = 10$ V/cm: $v_p = 470\times10 = 4.70\times10^3$ cm/s. Electron at 1000 V/cm: $v_n = -1.42\times10^6$ cm/s. \ 1 V across 2 \si{\micro\metre}: $E = V/L = 1/(2\times10^{-4}) = 5\times10^3$ V/cm. \tb{p.48}
+
+    \subsubsection{2.3.3 Velocity saturation}
+    \begin{minipage}[c]{0.36\linewidth}
+        \begin{tikzpicture}[x=0.55cm, y=0.45cm]
+            \draw[->] (0,0) -- (3.6,0) node[below left, inner sep=1pt] {\tiny$E$};
+            \draw[->] (0,0) -- (0,2.2) node[left, inner sep=1pt] {\tiny$v$};
+            \draw[thick, subsubDark] (0,0) -- (1.2,1.3) .. controls (1.8,1.8) .. (3.4,1.85);
+            \draw[dashed, gray] (0,1.9) -- (3.4,1.9) node[above left, inner sep=1pt] {\tiny$v_{\mathrm{sat}}$};
+            \node[subsubDark, rotate=47] at (0.45,0.9) {\tiny slope $\mu$};
+        \end{tikzpicture}
+    \end{minipage}\hfill
+    \begin{minipage}[c]{0.6\linewidth}\raggedright
+        \begin{itemize}
+            \item $v = \mu E$ only holds for $E \lesssim \SI{5000}{V/cm}$ (0.5 V/\si{\micro\metre}).
+            \item For $E \gtrsim 3\times10^4$ V/cm: $v \to v_{\mathrm{sat}} \approx \mathbf{10^7}$ \textbf{cm/s} (Si, electrons and holes).
+            \item $v_{\mathrm{sat}}$ sets an upper limit on device \textbf{frequency response}.
+        \end{itemize}
+    \end{minipage}\\[2pt]
+    \begin{tabular}{|l|l|l|l|}
+        \hline
+        \textbf{300 K} & $\mu_n$ (cm$^2$/V$\cdot$s) & $\mu_p$ & $v_{\mathrm{sat}}$ (cm/s) \\ \hline
+        Si (intrinsic) & 1420 & 470 & $10^7$ \\ \hline
+        Ge & 4300 & 2100 & $6\times10^6$ \\ \hline
+        GaAs & 8500 & -- & $2\times10^7$ (e$^-$) \\ \hline
+    \end{tabular}
+    \tb{p.48, Fig.\ 2.5}
+
+    \begin{handy}
+        \begin{itemize}
+            \item Uniform field: $E = V/L$. \ 1 V/\si{\micro\metre} $= 10^4$ V/cm. \ Keep everything in \textbf{cm}.
+            \item $I = jA$. \ $Q_n = -qn$, \ $Q_p = +qp$ (C/cm$^3$). \ Check units: $\mu E$ = (cm$^2$/V$\cdot$s)(V/cm) = cm/s.
+            \item Transit time across length $L$: $t = L/v$ (use $v_{\mathrm{sat}}$ at high field).
+            \item Preview (2.4): $j_n = qn\mu_nE$, \ $j_p = qp\mu_pE$, \ $\sigma = q(n\mu_n + p\mu_p)$, \ $\rho = 1/\sigma$.
+        \end{itemize}
+    \end{handy}
+
+    \subsection[2.4]{Resistivity of Intrinsic Silicon}\tb{p.49}
+    \mathbox{$j_n = qn\mu_nE$ \quad $j_p = qp\mu_pE$ \quad (A/cm$^2$)}\\
+    \mathbox{$j_T = j_n + j_p = q(n\mu_n + p\mu_p)E = \sigma E$}\\
+    \mathbox{$\sigma = q(n\mu_n + p\mu_p)$ \ $(\Omega\cdot\mathrm{cm})^{-1}$}\
+    \mathbox{$\rho = \dfrac1\sigma = \dfrac{E}{j_T}$ \ ($\Omega\cdot$cm)}
+    \begin{itemize}
+        \item Electrons and holes move in opposite directions but carry opposite charge, so their drift currents \textbf{add}.
+        \item \textbf{Ex 2.2} (intrinsic Si, $n = p = 10^{10}$): $\sigma = 1.6\times10^{-19}\cdot10^{10}(1420 + 470) = 3.02\times10^{-6}$, so $\rho = 3.31\times10^5\ \Omega\cdot$cm, a (poor) \textbf{insulator}. At 400 K, $\rho = 1420\ \Omega\cdot$cm, a semiconductor. \tb{p.50}
+    \end{itemize}
+
+    \begin{handy}
+        \begin{itemize}
+            \item $R = \rho L/A = L/(\sigma A)$. \ $V = EL$, \ $I = jA$.
+            \item Intrinsic: $\sigma_i = qn_i(\mu_n + \mu_p)$. Since $n_i$ rises sharply with $T$, $\rho_i$ falls sharply with $T$.
+        \end{itemize}
+    \end{handy}
+
+    \subsection[2.5]{Impurities in Semiconductors}\tb{p.50}
+    \textbf{Doping}: adding tiny, controlled amounts of impurity sets $\rho$ over a huge range and makes the material n- or p-type.\\
+    \begin{tabularx}{\linewidth}{|l|L|L|}
+        \hline
+        & \textbf{Donor} (2.5.1) & \textbf{Acceptor} (2.5.2) \\ \hline
+        Column & V: \textbf{P, As, Sb} (5 valence e$^-$) & III: \textbf{B} (3 valence e$^-$) \\ \hline
+        Effect & extra e$^-$, easily freed (about all ionized at 300 K) & missing bond, which becomes a mobile \textbf{hole} \\ \hline
+        Fixed ion & $+q$ (immobile) & $-q$ (immobile) \\ \hline
+        Gives & \textbf{n-type} ($N_D$) & \textbf{p-type} ($N_A$) \\ \hline
+    \end{tabularx}
+    \textbf{Memory aid:} \textbf{D}onor \textbf{D}onates e$^-$ (column V = fiVe). \textbf{A}cceptor \textbf{A}ccepts e$^-$ (column III), which leaves a hole.
+
+    \begin{handy}
+        \begin{itemize}
+            \item Carriers (e$^-$, holes) are \textbf{mobile}. Ionized impurities are \textbf{fixed} charge in the lattice.
+            \item $N_D$, $N_A$ in atoms/cm$^3$. Si has $5\times10^{22}$ atoms/cm$^3$, so even $10^{18}$ doping is only about 0.002\%.
+        \end{itemize}
+    \end{handy}
+
+    \subsection[2.6]{Electron and Hole Concentrations in Doped Semiconductors}\tb{p.51}
+    n-type: $n > p$. \ p-type: $p > n$. \ The larger population is the \textbf{majority} carrier; the smaller is the \textbf{minority} carrier.\\
+    \begin{minipage}[t]{0.49\linewidth}\raggedright
+        Charge neutrality: \tb{2.10}
+        \mathbox{$q(N_D + p - N_A - n) = 0$}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.49\linewidth}\raggedright
+        Still true for doped material: \tb{2.2}
+        \mathbox{$pn = n_i^2$}
+    \end{minipage}\\[2pt]
+    \textbf{Exact} (n-type, $N_D > N_A$): \tb{2.11}
+    $n = \dfrac{(N_D - N_A) + \sqrt{(N_D - N_A)^2 + 4n_i^2}}{2}$, \ $p = \dfrac{n_i^2}{n}$. \ (p-type: swap $N_D \leftrightarrow N_A$ and $n \leftrightarrow p$.) \tb{2.12}\\[1pt]
+    \textbf{Practical} (when $|N_D - N_A| \gg 2n_i$, almost always): \tb{p.53}\\
+    \mathbox{n-type: $n \cong N_D - N_A$, \quad $p = \dfrac{n_i^2}{N_D - N_A}$}\\
+    \mathbox{p-type: $p \cong N_A - N_D$, \quad $n = \dfrac{n_i^2}{N_A - N_D}$}
+    \begin{itemize}
+        \item Typical doping: $10^{14} \le |N_A - N_D| \le 10^{21}$ /cm$^3$.
+        \item \textbf{Majority} density is set by the doping, so it is \textbf{independent of $T$}. \textbf{Minority} density is $\propto n_i^2$, so it is \textbf{very $T$-dependent}.
+        \item Why minority carriers matter: diodes and BJTs depend on them (FETs are majority-carrier devices). \tb{p.54}
+        \item Use the \textbf{exact} formula when $|N_D - N_A|$ is close to $n_i$ (very light doping, high $T$, or near-equal $N_D \approx N_A$).
+    \end{itemize}
+    \textbf{Ex 2.3}: B $= 10^{16}$ ($N_A$), P $= 2\times10^{15}$ ($N_D$). $N_A > N_D$, so p-type: $p = 8\times10^{15}$, $n = 10^{20}/8\times10^{15} = 1.25\times10^4$ /cm$^3$. Check: $pn = 10^{20}$. \tb{p.53}\\
+    Ex: Sb $= 2\times10^{16}$ is a donor: $n = 2\times10^{16}$, $p = 5\times10^3$, n-type.
+
+    \begin{handy}
+        \begin{itemize}
+            \item Steps: \circled{1} identify each impurity as donor (V) or acceptor (III) \circled{2} compare $N_D$ vs $N_A$ to find the type \circled{3} majority = $|N_D - N_A|$ \circled{4} minority = $n_i^2$/majority \circled{5} check $pn = n_i^2$.
+            \item Si at 300 K: $n_i^2 = 10^{20}$ cm$^{-6}$. \ Minority at another $T$: recompute $n_i(T)$ first (2.2).
+        \end{itemize}
+    \end{handy}
+
+    \subsection[2.7]{Mobility and Resistivity in Doped Semiconductors}\tb{p.54}
+    Impurities \textbf{scatter} carriers (lattice distortion and ionized charge), so \textbf{$\mu$ falls} as the \textbf{total} doping $N_T = N_A + N_D$ rises.\\
+    \begin{minipage}[c]{0.44\linewidth}
+        \begin{tikzpicture}[x=0.3cm, y=0.0011cm]
+            \draw[->] (13,0) -- (21.3,0) node[above left, inner sep=1pt] {\tiny$\log_{10}N_T$};
+            \draw[->] (13,0) -- (13,1600) node[left, inner sep=1pt] {\tiny$\mu$};
+            \foreach \e in {14,16,18,20} \draw (\e,0) -- (\e,-40) node[below, inner sep=0.5pt] {\tiny\e};
+            \foreach \m in {500,1000,1500} \draw (13,\m) -- (12.8,\m) node[left, inner sep=0.5pt] {\tiny\m};
+            \draw[thick, secDark] plot[domain=13:21, samples=50] (\x, {52.2 + 1365/(1 + 10^(0.68*(\x - 16.986)))});
+            \draw[thick, subsubDark] plot[domain=13:21, samples=50] (\x, {44.9 + 426/(1 + 10^(0.72*(\x - 16.348)))});
+            \node[secDark] at (15,1550) {\tiny$\mu_n$};
+            \node[subsubDark] at (15,600) {\tiny$\mu_p$};
+        \end{tikzpicture}
+    \end{minipage}\hfill
+    \begin{minipage}[c]{0.55\linewidth}\raggedright
+        {\setlength{\tabcolsep}{2pt}%
+        \begin{tabular}{|l|c|c|}
+            \hline
+            $N_T$ (cm$^{-3}$) & $\mu_n$ & $\mu_p$ \\ \hline
+            $\le10^{14}$ & 1405 & 462 \\ \hline
+            $10^{15}$ & 1359 & 430 \\ \hline
+            $10^{16}$ & 1177 & 318 \\ \hline
+            $10^{17}$ & 727 & 153 \\ \hline
+            $10^{18}$ & 284 & 71 \\ \hline
+            $10^{19}$ & 108 & 50 \\ \hline
+            $10^{20}$ & 64 & 46 \\ \hline
+        \end{tabular}\par}
+        {\color{gray}Si, 300 K, from the Fig.\ 2.8 equations.}
+    \end{minipage}\\[2pt]
+    \textbf{Fig.\ 2.8 equations} (Si, 300 K): \tb{p.55}\\
+    $\mu_n = 52.2 + \dfrac{1365}{1 + \left(\frac{N_T}{9.68\times10^{16}}\right)^{0.68}}$ \quad
+    $\mu_p = 44.9 + \dfrac{426}{1 + \left(\frac{N_T}{2.23\times10^{16}}\right)^{0.72}}$\\
+    {\color{gray}(The book labels both as $\mu_n$; the second is $\mu_p$.)}\\[1pt]
+    \textbf{Majority carriers dominate the conductivity:} \tb{2.13}\\
+    \mathbox{n: $\sigma \cong q\mu_n(N_D - N_A)$}\
+    \mathbox{p: $\sigma \cong q\mu_p(N_A - N_D)$}
+    \begin{itemize}
+        \item \textbf{Trap:} $\mu$ uses the \textbf{sum} $N_T = N_A + N_D$, but the carrier density uses the \textbf{difference} $|N_D - N_A|$.
+        \item \textbf{Ex 2.4}: $N_D = 4\times10^{15}$: $n = 4\times10^{15}$, $p = 2.5\times10^4$, $\mu_n = 1280$, $\mu_p = 375$, so $\sigma = 0.817$ and $\rho = \symbf{1.22}\ \symbfup{\Omega}\cdot$\textbf{cm} (semiconductor). That is 5 orders of magnitude below intrinsic Si. \tb{p.56}
+        \item \textbf{Ex 2.5} (given $\rho$, find $N_D$), \textbf{iterate}: guess $N_D$, get $\mu_n(N_D)$, compare $\mu_nN_D$ with $1/(q\rho)$, repeat. Ex: $\rho = 0.025$ gives $N_D = 7.92\times10^{17}$. \tb{p.57}
+        \item Si becomes a \textbf{conductor} ($\rho \le 10^{-3}$) at $N_D \ge 9.68\times10^{19}$ (with $\mu_n = 64.5$).
+        \item Ex: B $= 4\times10^{18}$: p-type, $n = 25$, $\mu_p = 54.8$, $\rho = 0.0285\ \Omega\cdot$cm. \tb{p.58}
+    \end{itemize}
+
+    \begin{handy}
+        \begin{itemize}
+            \item Full recipe for $\rho$: type, then $n$ and $p$ (2.6), then $\mu_n, \mu_p$ at $N_T$ (2.7), then $\sigma = q(n\mu_n + p\mu_p)$, then $\rho = 1/\sigma$.
+            \item The minority term is negligible: e.g.\ $\mu_pp = 375\times2.5\times10^4 \ll \mu_nn = 1280\times4\times10^{15}$.
+            \item Doping both raises the carrier density (a huge effect) and lowers $\mu$ (a smaller effect), so $\rho$ still falls overall.
+        \end{itemize}
+    \end{handy}
+
+    \subsection[2.8]{Diffusion Currents}\tb{p.58}
+    \textbf{Diffusion}: carriers spread from \textbf{high} to \textbf{low} concentration (like smoke in a room). It needs a \textbf{gradient}, not a field.
+    \mathbox{$j_p^{\mathrm{diff}} = -qD_p\dfrac{\partial p}{\partial x}$ \qquad $j_n^{\mathrm{diff}} = +qD_n\dfrac{\partial n}{\partial x}$ \quad (A/cm$^2$)}\tb{2.14}
+    \begin{itemize}
+        \item \textbf{Signs:} with a positive gradient, both carriers diffuse in $-x$. Holes ($+q$) give current in $-x$, hence the minus sign. Electrons ($-q$) give current in $+x$, hence the plus sign.
+        \item $D_n$, $D_p$ = \textbf{diffusivity} (diffusion coefficient), in cm$^2$/s. Si at 300 K: $D_n \approx 2$--$35$, $D_p \approx 1$--$15$.
+    \end{itemize}
+    \textbf{Einstein relationship:} \tb{2.15, p.59}
+    \mathbox{$\dfrac{D_n}{\mu_n} = \dfrac{kT}{q} = \dfrac{D_p}{\mu_p} = V_T$}\
+    \mathbox{$V_T = kT/q = 0.0258$ V at 300 K}\\
+    $V_T$: 50 K 4.3 mV, \ 77 K 6.63 mV, \ 300 K 25.8 mV, \ 400 K 34.5 mV. \ Max $D$ (lightly doped Si): $D_n = 36.6$, $D_p = 12.1$ cm$^2$/s.\\
+    \textbf{Ex:} electron gradient $10^{16}$/(cm$^3\cdot$\si{\micro\metre}) $= 10^{20}$/cm$^4$, $D_n = 20$: $j_n = 1.6\times10^{-19}\cdot20\cdot10^{20} = +320$ A/cm$^2$. Holes, $+10^{20}$/cm$^4$, $D_p = 4$: $j_p = -64$ A/cm$^2$.
+
+    \begin{handy}
+        \begin{itemize}
+            \item \textbf{Gradient units:} per \si{\micro\metre} $\to$ per cm means $\times10^4$. A linear profile has $\dfrac{\partial n}{\partial x} = \dfrac{\Delta n}{\Delta x}$.
+            \item $D = \mu V_T$, e.g.\ $\mu_n = 1420 \Rightarrow D_n = 1420\times0.0258 = 36.6$ cm$^2$/s.
+            \item $V_T \propto T$: $V_T(T) = 0.0258\times\dfrac{T}{300}$ V.
+        \end{itemize}
+    \end{handy}
+
+    \subsection[2.9]{Total Current}\tb{p.59}
+    Total = drift + diffusion, for each carrier: \tb{2.16}
+    \mathbox{$j_n^T = q\mu_nnE + qD_n\dfrac{\partial n}{\partial x}$ \qquad $j_p^T = q\mu_ppE - qD_p\dfrac{\partial p}{\partial x}$}\\
+    With Einstein's relation: \tb{2.17}
+    \mathbox{$j_n^T = q\mu_nn\left(E + \dfrac{V_T}{n}\dfrac{\partial n}{\partial x}\right)$ \qquad $j_p^T = q\mu_pp\left(E - \dfrac{V_T}{p}\dfrac{\partial p}{\partial x}\right)$}\\
+    Combine with \textbf{Gauss' law} $\nabla\cdot(\varepsilon E) = Q$ ($\varepsilon$ in F/cm) to analyse devices. \tb{2.18, p.60}
+    \begin{itemize}
+        \item \textit{Extra:} in \textbf{equilibrium} the net current is 0, so drift and diffusion \textbf{cancel} for each carrier. This creates the built-in field of a pn junction (ch.\ 3).
+        \item Total current: $I = (j_n^T + j_p^T)A$.
+    \end{itemize}
+
+    \begin{handy}
+        \begin{itemize}
+            \item Drift is driven by $E$ (field) and uses $\mu$. Diffusion is driven by $\partial n/\partial x$ (gradient) and uses $D$. They are linked by $D = \mu V_T$.
+            \item Uniform doping and no gradient: only drift. No field: only diffusion.
+        \end{itemize}
+    \end{handy}
+
+    \subsection[2.10]{Energy Band Model}\tb{p.60}
+    \textbf{Conduction band}: allowed states for free electrons, bottom edge $E_C$. \ \textbf{Valence band}: bonding electrons, top edge $E_V$. No states in between: \tb{2.19}
+    \mathbox{$E_G = E_C - E_V$}\\[2pt]
+    {\centering
+    \newcommand{\bandbase}{%
+        \fill[gray!20] (0,1.15) rectangle (1.3,1.5);
+        \fill[gray!20] (0,0) rectangle (1.3,0.35);
+        \draw[thick] (0,1.15) -- (1.3,1.15); \draw[thick] (0,0.35) -- (1.3,0.35);
+        \node[left, inner sep=1pt] at (0,1.15) {\tiny$E_C$};
+        \node[left, inner sep=1pt] at (0,0.35) {\tiny$E_V$};}
+    \begin{tikzpicture}[x=0.75cm, y=0.75cm]
+        \bandbase
+        \draw[<->] (0.65,0.37) -- (0.65,1.13) node[midway, right, inner sep=1pt] {\tiny$E_G$};
+        \node at (0.65,-0.2) {\tiny intrinsic};
+        \begin{scope}[xshift=1.55cm]
+            \bandbase
+            \draw[dashed, secDark, thick] (0.1,1.0) -- (1.0,1.0) node[right, inner sep=1pt] {\tiny$E_D$};
+            \node at (0.65,-0.2) {\tiny n-type (donor)};
+        \end{scope}
+        \begin{scope}[xshift=3.1cm]
+            \bandbase
+            \draw[dashed, subsubDark, thick] (0.1,0.5) -- (1.0,0.5) node[right, inner sep=1pt] {\tiny$E_A$};
+            \node at (0.65,-0.2) {\tiny p-type (acceptor)};
+        \end{scope}
+        \node[gray, align=left, right] at (5.75,0.75) {\tiny conduction\\[-1pt]\tiny band (top)\\[2pt]\tiny valence\\[-1pt]\tiny band (bottom)};
+    \end{tikzpicture}\par}
+    \begin{itemize}
+        \item \textbf{0 K} (2.10.1): valence band full, conduction band empty, so no conduction. \textbf{$T > 0$}: an electron jumps $E_G$, creating an \textbf{electron--hole pair}. This is the band picture of a broken bond. \tb{p.61}
+        \item \textbf{Donor} (2.10.2): level $E_D$ just below $E_C$. $E_C - E_D \approx 0.045$ eV (P), so almost all donors are ionized at 300 K.
+        \item \textbf{Acceptor}: level $E_A$ just above $E_V$. $E_A - E_V \approx 0.044$ eV (B). Valence electrons fill it, leaving holes.
+        \item \textbf{Compensated} (2.10.3, both dopants, $N_D > N_A$): donor electrons drop into the acceptor levels first, so $n = N_D - N_A$.
+        \item The band model and the bond model (2.2) are two views of the same thing.
+    \end{itemize}
+
+    \begin{handy}
+        \begin{itemize}
+            \item Compare with $kT \approx 0.026$ eV at 300 K: dopant levels ($\approx0.045$ eV $\approx 1.7kT$) ionize easily, but $E_G = 1.12$ eV $\approx 43kT$ is hard to cross, which is why $n_i$ is so small.
+            \item In the band picture, electrons fall \textbf{down} and holes float \textbf{up} (to lower energy).
+        \end{itemize}
+    \end{handy}

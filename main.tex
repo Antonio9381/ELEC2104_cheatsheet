@@ -1,0 +1,17 @@
+% !TEX program = lualatex
+\documentclass[a4paper, landscape]{article}
+\input{src/default.tex}
+
+% Global settings
+\def\subject{ELEC2104}
+\def\semester{2026 S2}
+\def\sheetauthor{Antonio}
+\def\cols{4}
+
+\cheatsheet{
+    \contents
+
+    % One file per topic, in course order
+    \input{sections/01_Intro}
+    \input{sections/02_SolidState}
+}

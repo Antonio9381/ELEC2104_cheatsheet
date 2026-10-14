@@ -1,0 +1,271 @@
+\section[1]{Introduction}
+
+    \subsection[1.3]{Notational Conventions}\tb{p.12}
+    \begin{tabularx}{\linewidth}{|l|L|l|}
+        \hline
+        \textbf{Form} & \textbf{Meaning} & \textbf{e.g.} \\ \hline
+        $v_{BE}$ & total = dc + signal & $v_{BE} = V_{BE} + v_{be}$ \\ \hline
+        $V_{BE}$ & dc (bias / Q-point) value & $V_{BE} = \SI{0.7}{\volt}$ \\ \hline
+        $v_{be}$ & signal (ac) part only & $v_{be} = \SI{5}{\milli\volt}\sin\omega t$ \\ \hline
+        $V_{be}$ & amplitude of sinusoid; \textbf{bold} = phasor & $\ph{V_{be}} = V_{be}\angle\theta$ \\ \hline
+    \end{tabularx}
+    \textbf{Rule:} CAPITAL subscript $\Rightarrow$ includes dc; lowercase letter $\Rightarrow$ varies with time.\\
+    \textbf{Split a signal:} dc part = constant term, signal part = everything else.\\
+    e.g.\ $v_A = 5\sin 2000\pi t + 4 + 3\cos 1000\pi t \Rightarrow V_A = \SI{4}{\volt}$, $v_a = 5\sin 2000\pi t + 3\cos 1000\pi t$.
+
+    \subsubsection{Units and conductance}
+    \begin{itemize}
+        \item Equations assume consistent units, e.g.\ $5 = 10000 I_1 + 0.6$ (V, A, $\Omega$).
+        \item Shortcut: \textbf{V, mA, k$\Omega$} is also consistent ($\Rightarrow$ power in mW).
+        \item Conductance is the reciprocal of the matching resistor: $G_x = 1/R_x$, \ $g_\pi = 1/r_\pi$.
+    \end{itemize}
+
+    \subsubsection{Dependent (controlled) sources}
+    Diamond symbol: arrow inside = current source, $\pm$ inside = voltage source.\\
+    \begin{tabularx}{\linewidth}{|l|l|l|L|}
+        \hline
+        \textbf{Type} & \textbf{Output} & \textbf{Gain unit} & \textbf{Used for} \\ \hline
+        VCCS & $i = g_m v_1$ & S (A/V) & transconductance, FET/BJT small-signal \\ \hline
+        CCCS & $i = \beta i_1$ & A/A & BJT current gain \\ \hline
+        VCVS & $v = A v_1$ & V/V & voltage amplifier, op amp \\ \hline
+        CCVS & $v = K i_1$ & $\Omega$ & transresistance (rarely used) \\ \hline
+    \end{tabularx}
+
+    \begin{handy}
+        \begin{itemize}
+            \item dc value = average: $V_{DC} = \frac1T\int_0^T v\,dt$. \ Sine: $V_{\mathrm{pp}} = 2V_p$, \ $V_{\mathrm{rms}} = V_p/\sqrt2$.
+            \item Phasor: $V_m\cos(\omega t+\phi) \leftrightarrow \ph{V} = V_m\angle\phi$. \ $\sin x = \cos(x - 90^\circ)$.
+            \item $\ph{V} = a + jb = |\ph{V}|\angle\theta$: \ $|\ph{V}| = \sqrt{a^2+b^2}$, \ $\theta = \tan^{-1}(b/a)$ (check the quadrant).
+        \end{itemize}
+    \end{handy}
+
+    \subsection[1.4]{Problem-Solving Approach}\tb{p.13}
+    \begin{enumerate}
+        \item \textbf{Problem}: restate it clearly
+        \item \textbf{Knowns}: list the given data
+        \item \textbf{Unknowns}: define what to find
+        \item \textbf{Assumptions}: list them (e.g.\ active region, ideal op amp)
+        \item \textbf{Approach}: choose a method
+        \item \textbf{Analysis}: \textit{draw the circuit and label every V and I}
+        \item \textbf{Check}: is the maths right, are all unknowns found, do the \textbf{assumptions still hold}?
+        \item \textbf{Evaluate}: is it realistic? If not, repeat steps 4--7
+        \item \textbf{Simulate} (SPICE) and compare with the hand result
+    \end{enumerate}
+
+    \subsubsection{Reasonable numbers (sanity check)}
+    \begin{itemize}
+        \item DC voltages lie between the supply rails, e.g.\ $V_{EE} \le V \le V_{CC}$. \tb{p.14}
+        \item AC peak-to-peak $\le V_{CC} - V_{EE}$ (e.g.\ $+8/{-5}$ V $\Rightarrow \le \SI{13}{\volt_{pp}}$).
+        \item Currents range from \si{\micro\ampere} to about \SI{100}{\milli\ampere}. Max current through R: $I_{\mathrm{max}} = V_{\mathrm{supply}}/R$.
+        \item Typical values: supplies 10--20 V; R from a few $\Omega$ to G$\Omega$.
+        \item If an answer breaks any of these rules, recheck the assumptions (e.g.\ wrong region).
+    \end{itemize}
+
+    \begin{handy}
+        \begin{itemize}
+            \item $V = IR$, \ $P = VI = I^2R = V^2/R$. \quad V/k$\Omega$ = mA, \ mA$\cdot$k$\Omega$ = V, \ V$\cdot$mA = mW.
+            \item Prefixes: p $10^{-12}$, n $10^{-9}$, $\mu$ $10^{-6}$, m $10^{-3}$, k $10^{3}$, M $10^{6}$, G $10^{9}$.
+        \end{itemize}
+    \end{handy}
+
+    \subsection[1.5]{Important Concepts from Circuit Theory}\tb{p.15}
+    Toolkit: KVL, KCL, nodal / mesh analysis, Th\'evenin / Norton, voltage and current division.
+
+    \subsubsection{1.5.1 Voltage and current division}
+    \begin{minipage}[t]{0.49\linewidth}\raggedright
+        \textbf{Voltage divider} (series):
+        \mathbox{$v_1 = v_i\dfrac{R_1}{R_1+R_2}$}\\
+        \textbf{Only if} the same current flows through $R_1$ and $R_2$ (nothing else is connected at the middle node).
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.49\linewidth}\raggedright
+        \textbf{Current divider} (parallel):
+        \mathbox{$i_1 = i_i\dfrac{R_2}{R_1+R_2}$}\\
+        Uses the \textbf{other} resistor on top. \textbf{Only if} the same voltage is across both.
+    \end{minipage}
+    \begin{itemize}
+        \item Parallel: $R_1\|R_2 = \dfrac{R_1R_2}{R_1+R_2}$ \quad $R\|R = R/2$ \quad $R\|10R \approx 0.91R$ (the smaller one dominates).
+        \item AC: replace $R$ with $Z$ and use phasors: $\ph{V_1} = \ph{V_i}\,Z_1/(Z_1+Z_2)$, \ $\ph{I_1} = \ph{I_i}\,Z_2/(Z_1+Z_2)$. \tb{p.16}
+        \item \textbf{Pitfall}: a load $R_L$ across $R_2$ breaks the plain divider. Use $R_2 \to R_2\|R_L$.
+    \end{itemize}
+
+    \subsubsection{1.5.2 Th\'evenin and Norton equivalents}
+    {\centering
+    \begin{circuitikz}[scale=0.6]
+        \draw (0,1.6) to[V, l_=$v_{\mathrm{th}}$] (0,0);
+        \draw (0,1.6) to[R, l=$R_{\mathrm{th}}$] (1.8,1.6) to[short, -o] (2.2,1.6);
+        \draw (0,0) to[short, -o] (2.2,0);
+        \node at (3.0,0.8) {$\Leftrightarrow$};
+        \draw (4.2,0) to[I, l_=$i_n$] (4.2,1.6) -- (5.4,1.6) to[short, -o] (6.0,1.6);
+        \draw (5.4,1.6) to[R, l=$R_{\mathrm{th}}$] (5.4,0);
+        \draw (4.2,0) to[short, -o] (6.0,0);
+    \end{circuitikz}\par}
+    \begin{itemize}
+        \item $v_{\mathrm{th}}$ = \textbf{open-circuit} voltage at the terminals.
+        \item $i_n$ = \textbf{short-circuit} current at the terminals.
+        \item $R_{\mathrm{th}}$: \textbf{zero the independent sources} (V source $\to$ short, I source $\to$ open). \textbf{Keep the dependent sources active.} Apply a test source $v_x$ and find $i_x$: \ $R_{\mathrm{th}} = v_x/i_x$.
+        \item Linked by $v_{\mathrm{th}} = i_n R_{\mathrm{th}}$: find any two and you get the third. Use this to check your answer.
+        \item With no dependent sources you can find $R_{\mathrm{th}}$ by combining resistors directly.
+    \end{itemize}
+    \textbf{Ex 1.1 pattern} (CCCS $\beta i_1$ feeding the output node, $R_1$ from the input): \tb{p.17--19}\\
+    $v_{\mathrm{th}} = \dfrac{(\beta+1)R_S}{(\beta+1)R_S + R_1}v_i$ \quad $i_n = \dfrac{(\beta+1)v_i}{R_1}$ \quad
+    $R_{\mathrm{th}} = R_S \,\Big\|\, \dfrac{R_1}{\beta+1}$\\
+    \textbf{Insight:} the dependent source makes $R_1$ look $(\beta+1)$ times smaller from the output (emitter-follower idea).
+
+    \begin{handy}
+        \begin{itemize}
+            \item Series: $R = R_1 + R_2$. \ Parallel: $G = G_1 + G_2$ (conductances add).
+            \item Impedance: $Z_R = R$, \ $Z_L = j\omega L$, \ $Z_C = \dfrac{1}{j\omega C}$. \ ($\omega \to 0$: C open, L short. \ $\omega\to\infty$: C short, L open.)
+            \item KCL: $\sum i_{\mathrm{in}} = \sum i_{\mathrm{out}}$ at a node. \ KVL: $\sum v = 0$ around a loop.
+            \item Source transformation: $v_{\mathrm{th}} = i_n R_{\mathrm{th}}$. \ Max power to the load when $R_L = R_{\mathrm{th}}$: \ $P_{\mathrm{max}} = \dfrac{v_{\mathrm{th}}^2}{4R_{\mathrm{th}}}$.
+        \end{itemize}
+    \end{handy}
+
+    \subsection[1.6]{Frequency Spectrum of Electronic Signals}\tb{p.21}
+    \begin{itemize}
+        \item \textbf{Fourier}: any signal is a sum of sinusoids. The \textbf{spectrum} is the amplitude and phase of each one versus frequency.
+        \item \textbf{Periodic} signal $\Rightarrow$ \textbf{discrete} spectrum (harmonics only). \textbf{Non-periodic} $\Rightarrow$ \textbf{continuous} spectrum.
+        \item Fundamental: $\omega_o = 2\pi/T$ (rad/s), \ $f_o = 1/T$ (Hz). Harmonics are at $2f_o, 3f_o, \dots$
+    \end{itemize}
+    \textbf{Square wave} (period $T$, amplitude $V_O$, offset $V_{DC}$):
+    \mathbox{$v(t) = V_{DC} + \dfrac{2V_O}{\pi}\left(\sin\omega_o t + \tfrac13\sin3\omega_o t + \tfrac15\sin5\omega_o t + \cdots\right)$}\\
+    Only \textbf{odd} harmonics, with amplitude $\propto 1/n$. $V_{DC}$ is the average (0 Hz) term. ($2V_O/\pi$ means $V_O$ is peak-to-peak; for $\pm A$ the factor becomes $4A/\pi$.)
+
+    \subsubsection{Common signal frequency ranges}
+    \tb{Table 1.3, p.22}
+    \begin{tabularx}{\linewidth}{|L|l||L|l|}
+        \hline
+        Audio & 20 Hz--20 kHz & AM radio & 540--1600 kHz \\ \hline
+        Baseband video & 0--4.5 MHz & FM radio & 88--108 MHz \\ \hline
+        Cellular & 0.8--2.7 GHz & Satellite TV & 3.7--4.2 GHz \\ \hline
+    \end{tabularx}
+
+    \subsubsection{Bandwidth and $-3$ dB (preview of Bode plots)}
+    \tb{p.20--21}
+    \begin{itemize}
+        \item $f_L$, $f_H$ = lower and upper \textbf{cutoff} frequencies, where output \textbf{power halves} ($-3$ dB). There, voltage gain = $1/\sqrt2 \approx 0.707\times$ the mid-band gain.
+        \item Bandwidth $BW = f_H - f_L$ (e.g.\ audio amplifier: 20 Hz--20 kHz).
+    \end{itemize}
+
+    \begin{handy}
+        \begin{itemize}
+            \item $\omega = 2\pi f$ \ (rad/s $\leftrightarrow$ Hz), \quad $f = 1/T$, \quad $n$th harmonic: $f_n = n f_o$.
+            \item Read $f$ from a signal: $\sin(2000\pi t) \Rightarrow \omega = 2000\pi \Rightarrow f = \omega/2\pi = \SI{1}{\kilo\hertz}$.
+            \item dB: $20\log_{10}|A_v|$ (voltage/current), \ $10\log_{10}(P_2/P_1)$ (power).
+            \item $-3$ dB $= \times0.707$ \ $+6$ dB $\approx \times2$ \ $20$ dB $= \times10$ \ $40$ dB $= \times100$ \ $0$ dB $= \times1$.
+        \end{itemize}
+    \end{handy}
+
+    \subsection[1.7]{Amplifiers}\tb{p.22}
+    \textbf{Linear} amplifier: same frequency out; only amplitude and phase change. Use \textbf{superposition} on each frequency component.\\
+    $v_i = V_i\sin(\omega t+\phi)$ \ $\to$ \ $v_o = V_o\sin(\omega t+\phi+\theta)$
+    \mathbox{$A_v = \dfrac{\ph{V_o}}{\ph{V_i}} = \dfrac{V_o\angle(\phi+\theta)}{V_i\angle\phi} = \dfrac{V_o}{V_i}\angle\theta$}
+    \begin{itemize}
+        \item $|A_v|$ = amplitude ratio, $\theta$ = phase shift. Both usually depend on frequency.
+        \item Inverting: $A_v < 0$, i.e.\ a $180^\circ$ phase shift (e.g.\ $A_v = -5$: $\times5$ and flipped).
+        \item $\omega t$ is in \textbf{rad}, but books often give $\phi$ in \textbf{degrees}. Convert before calculating.
+    \end{itemize}
+    \textbf{Ex:} $v_i = 0.001\sin(2000\pi t)$, \ $v_o = -5\cos(2000\pi t+25^\circ)$ \tb{p.23}\\
+    $-\cos x = \sin(x-90^\circ) \Rightarrow \ph{V_o} = 5\angle{-65^\circ}$, \ $\ph{V_i} = 0.001\angle0^\circ$, \ $A_v = 5000\angle{-65^\circ}$.
+
+    \subsubsection{1.7.1 Ideal op amp}
+    \begin{minipage}[c]{0.45\linewidth}
+        \begin{circuitikz}[scale=0.6]
+            \node[op amp, scale=0.6] (oa) at (0,0) {};
+            \draw (oa.-) -- ++(-0.3,0) coordinate (n);
+            \draw (n) to[R, l_=$R_1$, -o] ++(-1.5,0) node[left] {$v_i$};
+            \draw (n) -- ++(0,0.8) coordinate (t);
+            \draw (t) to[R, l=$R_2$] (t -| oa.out) -- (oa.out);
+            \draw (oa.out) to[short, -o] ++(0.4,0) node[right] {$v_o$};
+            \draw (oa.+) -- ++(-0.3,0) node[ground] {};
+        \end{circuitikz}
+    \end{minipage}\hfill
+    \begin{minipage}[c]{0.54\linewidth}\raggedright
+        $A\to\infty$, $R_{\mathrm{in}}\to\infty$ give two rules:\\
+        \circled{1} $v_- = v_+$ \quad \circled{2} $i_- = i_+ = 0$\\[1pt]
+        \textbf{Inverting:}
+        \mathbox{$A_v = -\dfrac{R_2}{R_1}$}\\
+        $R_{\mathrm{in}} = R_1$ \tb{p.24}
+    \end{minipage}
+    \begin{itemize}
+        \item \textbf{Virtual ground}: $v_- = 0$ because $v_+$ is grounded, but it is \textbf{not} wired to ground. Never short it during analysis. \tb{p.25}
+        \item Method: KCL at $v_-$ with $i_- = 0$ $\Rightarrow$ $\dfrac{v_i - 0}{R_1} = \dfrac{0 - v_o}{R_2}$.
+        \item Non-inverting (extra): $A_v = 1 + R_2/R_1$ (always $\ge 1$, no phase flip). Follower: $A_v = 1$.
+        \item Ex: $R_2 = \SI{100}{\kilo\ohm}$, $A_v = -5 \Rightarrow R_1 = \SI{20}{\kilo\ohm}$.
+    \end{itemize}
+
+    \subsubsection{1.7.2 Amplifier frequency response (ideal filters)}
+    {\centering
+    \filtresp{LP}{(0,1) -- (0.5,1) -- (0.5,0)}{\node[below=-1pt] at (0.5,0) {\tiny$f_H$};}\hfill
+    \filtresp{HP}{(0.5,0) -- (0.5,1) -- (1,1)}{\node[below=-1pt] at (0.5,0) {\tiny$f_L$};}\hfill
+    \filtresp{BP}{(0.3,0) -- (0.3,1) -- (0.7,1) -- (0.7,0)}{\node[below=-1pt] at (0.3,0) {\tiny$f_L$}; \node[below=-1pt] at (0.7,0) {\tiny$f_H$};}\hfill
+    \filtresp{BR (notch)}{(0,1) -- (0.3,1) -- (0.3,0) (0.7,0) -- (0.7,1) -- (1,1)}{\node[below=-1pt] at (0.3,0) {\tiny$f_L$}; \node[below=-1pt] at (0.7,0) {\tiny$f_H$};}\hfill
+    \filtresp{All-pass}{(0,1) -- (1,1)}{}\par}
+    \vspace{3pt}
+    \begin{tabularx}{\linewidth}{|l|L|}
+        \hline
+        Low-pass & passes $f < f_H$ \\ \hline
+        High-pass & passes $f > f_L$ \\ \hline
+        Band-pass & passes $f_L < f < f_H$, \ $BW = f_H - f_L$ \\ \hline
+        Band-reject & blocks $f_L < f < f_H$ \\ \hline
+        All-pass & gain is flat at all $f$; only changes the \textbf{phase} \\ \hline
+    \end{tabularx}
+    An amplifier designed to pass only certain frequencies is a \textbf{filter}. \tb{p.26}\\
+    \textbf{Method:} split $v_i$ into its components, find $f = \omega/2\pi$ for each, keep (times $A$) the ones in the passband, drop the rest.\\
+    Ex: BP filter, $f_L = 1.5$k, $f_H = 2.5$k, $A = 10$. $v_i = 0.5\sin(2000\pi t) + \sin(4000\pi t) + 1.5\sin(6000\pi t)$ has components at 1, 2, 3 kHz. Only 2 kHz passes, so $v_o = 10\sin(4000\pi t)$.
+
+    \begin{handy}
+        \begin{itemize}
+            \item Phasor maths: multiply magnitudes and add angles; divide magnitudes and subtract angles.
+            \item $\cos x = \sin(x+90^\circ)$, \ $-\sin x = \sin(x\pm180^\circ)$, \ $-\cos x = \sin(x - 90^\circ)$.
+            \item deg $\to$ rad: $\times\pi/180$. \ $f = \omega/2\pi$, \ $T = 1/f$.
+            \item Gain in dB: $A_{\mathrm{dB}} = 20\log_{10}|A_v|$. Cascaded stages: gains multiply, dB values add.
+            \item Inverting $-R_2/R_1$ \quad Non-inverting $1 + R_2/R_1$ \quad Follower $1$.
+        \end{itemize}
+    \end{handy}
+
+    % ================= End of chapter =================
+    \subsection[1.K]{Key Takeaways \& Watch Outs}\tb{Summary, p.34}
+    \begin{itemize}
+        \item \textbf{Read subscripts carefully:} $v_{BE}$ total, $V_{BE}$ dc, $v_{be}$ signal, $\ph{V_{be}}$ phasor.
+        \item \textbf{$\omega$ vs $f$:} the most common slip is the missing $2\pi$. In $\sin(\omega t)$, $\omega$ is in rad/s, not Hz.
+        \item \textbf{Degrees vs radians:} convert $\phi$ before putting it into $\sin(\omega t + \phi)$ on a calculator.
+        \item \textbf{Dividers} need the same current (voltage divider) or the same voltage (current divider). A load breaks them.
+        \item \textbf{Th\'evenin/Norton:} zero \textit{only} the independent sources and keep the dependent ones. Check with $v_{\mathrm{th}} = i_n R_{\mathrm{th}}$.
+        \item \textbf{Linear amplifiers} create no new frequencies: treat each component separately (superposition).
+        \item \textbf{Ideal op amp:} $v_- = v_+$, $i_\pm = 0$ (needs negative feedback). A virtual ground is not a real ground.
+        \item \textbf{Filters} are named by their passband. The edges $f_L$, $f_H$ are the $-3$ dB (half-power) points.
+        \item \textbf{Sanity check} every answer: within the supply rails, currents between \si{\micro\ampere} and about 100 mA, and do the assumptions hold?
+        \item \textbf{Answer to 3 significant figures}: component tolerances (1--50\%) make more digits meaningless. \tb{1.9}
+    \end{itemize}
+
+    \subsection[1.F]{Chapter 1 Formula Sheet}
+    \renewcommand{\arraystretch}{1.6}
+    \begin{tabularx}{\linewidth}{|>{\bfseries}l|L|}
+        \hline
+        Notation & $v_{BE} = V_{BE} + v_{be}$ \quad $\ph{V} = V_m\angle\phi$ \quad $G = 1/R$ \\ \hline
+        V divider & $v_1 = v_i\dfrac{R_1}{R_1+R_2}$ \quad $\ph{V_1} = \ph{V_i}\dfrac{Z_1}{Z_1+Z_2}$ \\ \hline
+        I divider & $i_1 = i_i\dfrac{R_2}{R_1+R_2}$ \quad $\ph{I_1} = \ph{I_i}\dfrac{Z_2}{Z_1+Z_2}$ \\ \hline
+        Parallel & $R_1\|R_2 = \dfrac{R_1R_2}{R_1+R_2}$ \quad $G = G_1 + G_2$ \\ \hline
+        Th\'evenin & $v_{\mathrm{th}} = v_{\mathrm{oc}}$ \quad $i_n = i_{\mathrm{sc}}$ \quad $R_{\mathrm{th}} = \dfrac{v_x}{i_x} = \dfrac{v_{\mathrm{th}}}{i_n}$ \\ \hline
+        Impedance & $Z_R = R$ \quad $Z_L = j\omega L$ \quad $Z_C = \dfrac{1}{j\omega C}$ \\ \hline
+        Power & $P = VI = I^2R = V^2/R$ \quad $P_{\mathrm{max}} = \dfrac{v_{\mathrm{th}}^2}{4R_{\mathrm{th}}}$ at $R_L = R_{\mathrm{th}}$ \\ \hline
+        Frequency & $\omega = 2\pi f$ \quad $f = 1/T$ \quad $f_n = n f_o$ \\ \hline
+        Square wave & $V_{DC} + \dfrac{2V_O}{\pi}\left(\sin\omega_o t + \frac13\sin3\omega_o t + \cdots\right)$ \\ \hline
+        Sine & $V_{\mathrm{rms}} = V_p/\sqrt2$ \quad $V_{\mathrm{pp}} = 2V_p$ \\ \hline
+        Gain & $A_v = \dfrac{\ph{V_o}}{\ph{V_i}} = \dfrac{V_o}{V_i}\angle\theta$ \quad $A_{\mathrm{dB}} = 20\log_{10}|A_v|$ \\ \hline
+        Op amp & Inv.\ $-\dfrac{R_2}{R_1}$ \quad Non-inv.\ $1 + \dfrac{R_2}{R_1}$ \quad $R_{\mathrm{in,inv}} = R_1$ \\ \hline
+        Bandwidth & $BW = f_H - f_L$ \quad at $f_{L,H}$: gain $\times\dfrac{1}{\sqrt2}$, power $\times\frac12$ \\ \hline
+    \end{tabularx}
+    \renewcommand{\arraystretch}{1.05}
+
+    \subsection[1.C]{Constants \& Key Numbers}
+    \begin{tabularx}{\linewidth}{|l|L||l|L|}
+        \hline
+        $1/\sqrt2$ & 0.707 ($-3$ dB) & $\sqrt2$ & 1.414 \\ \hline
+        $2\pi$ & 6.283 & $1/2\pi$ & 0.159 \\ \hline
+        $2/\pi$ & 0.637 & $4/\pi$ & 1.273 \\ \hline
+        $\log_{10}2$ & 0.301 ($\times2$ = 6 dB) & $\pi/180$ & 0.01745 rad/$^\circ$ \\ \hline
+        Audio & 20 Hz--20 kHz & Supplies & 10--20 V typ. \\ \hline
+        Currents & \si{\micro\ampere} -- 100 mA & Sig.\ figs & 3 \\ \hline
+    \end{tabularx}
+    {\color{gray}Physical constants ($q$, $k$, $V_T$, \dots) will be added with the chapters that use them.}
