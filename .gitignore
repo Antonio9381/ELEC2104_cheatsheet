@@ -1,0 +1,34 @@
+# VS Code
+.vscode/
+
+# LaTeX auxiliary files
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+*.xdv
+
+# Compiled PDFs (uncomment if you don't want PDFs in Git)
+# *.pdf
+
+# LaTeX build directories
+_build/
+build/
+
+# Editor temporary files
+*.swp
+*.swo
+*~
+.DS_Store
